@@ -12,6 +12,7 @@ import {
 } from "solid-start";
 import { ErrorBoundary } from "solid-start/error-boundary";
 
+// <script type="text/javascript" src="/dist.js"></script>
 export default function Root() {
   return (
     <Html lang="en">

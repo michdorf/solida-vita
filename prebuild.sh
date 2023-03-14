@@ -1,0 +1,2 @@
+echo "" > public/dist.js
+cat src/externals/webapp.helper.js src/externals/debug.js src/externals/indexedDB.js src/externals/stellaDB.js src/externals/memo.js src/externals/memo.sinc.js >> public/dist.js

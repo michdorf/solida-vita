@@ -2,6 +2,7 @@
   "name": "solid-rss",
   "scripts": {
     "dev": "solid-start dev",
+    "combinedist": "./prebuild.sh",
     "build": "solid-start build",
     "start": "solid-start start",
     "test": "vitest run",

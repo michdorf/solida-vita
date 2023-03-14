@@ -1,0 +1,3 @@
+[submodule "src/moduli"]
+	path = src/moduli
+	url = https://github.com/michdorf/moduli
