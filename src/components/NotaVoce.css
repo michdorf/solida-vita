@@ -1,11 +1,11 @@
-.articolo.voce {
+.nota.voce {
+    text-align: left;
     display: flex;
-    border-color: black;
-    border-width: 0;
+    border: 0 solid black;
     border-bottom-width: 1px;
 }
 
-.articolo.voce .thumbnail {
+.nota.voce .thumbnail {
     background-image: url('/fallback_img.png'); 
     width: 64px; 
     height: 64px; 
@@ -13,6 +13,6 @@
     background-position: center;
 }
 
-.articolo.voce div:nth-child(2) {
+.nota.voce div:nth-child(2) {
     flex: 1;
 }
