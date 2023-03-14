@@ -1,5 +1,6 @@
 // declare let Memo: any;
 import { createEffect } from "solid-js";
+import { initNoteStore } from "~/stores/note";
 import Memo from "../moduli/memo/memo"
 import oauthclient, { oauthStatus } from "./oauth";
 
@@ -11,6 +12,7 @@ export default function initMemo() {
         memo.sinc.access_token = "";
         memo.suPronto(() => {
             console.log("Klar");
+            initNoteStore(memo);
         });
     
         createEffect(() => {
