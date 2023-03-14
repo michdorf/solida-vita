@@ -1,15 +1,16 @@
 import { createSignal } from "solid-js";
 import { createStore } from "solid-js/store";
 import { UPDATE_TIPO } from "~/moduli/memo/memo";
-import Memo from "~/moduli/memo/memobase";
+import Memo from "~/moduli/memo/memo";
+import Nota from "~/interface/nota";
 
-const [note, setNote] = createSignal<any[]>([]);
+const [note, setNote] = createSignal<Nota[]>([]);
 export default note;
 
 export function initNoteStore(memo: Memo) {
     carica_note(memo);
 
-    memo.senti("note", function (tipo, riga) {
+    memo.senti("note", function (tipo, riga: Nota) {
         debugger;
         switch (tipo) {
             case UPDATE_TIPO.INSERIMENTO:
