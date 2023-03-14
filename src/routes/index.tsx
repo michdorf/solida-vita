@@ -1,12 +1,20 @@
 import "./index.css";
-import { createSignal } from "solid-js";
-import '../lib/simplememo'
-import memo from '../lib/db'
+import { Show } from "solid-js";
+import initMemo from "~/lib/db"; '../lib/db'
+import oauthclient, { autoLogin, oauthStatus } from "~/lib/oauth";
+import Memo from "~/moduli/memo/memobase";
 
+let memo: Memo;
+if (typeof window !== "undefined") {
+  memo = initMemo();
+}
 export default function Home() {
-  const [feedInx, setFeedInx] = createSignal(1);
-
   console.log(memo);
+
+  autoLogin();
+  function login() {
+    oauthclient.authorizationCode("");
+  }
 
   return (
     <main style="display: flex; flex-direction: column">
@@ -17,7 +25,9 @@ export default function Home() {
         <div class="left panel" style="overflow: auto;">
         </div>
         <div class="right panel">
-          
+          <Show when={oauthStatus() !== "authorized"}>
+            <button onclick={login}>Login</button>
+          </Show>
         </div>
       </div>
     </main>
