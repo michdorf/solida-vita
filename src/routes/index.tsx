@@ -32,7 +32,7 @@ export default function Home() {
       </div>
       <div class="panel-cont">
         <div class="left panel" style="overflow: auto;">
-          <For each={note()}>{(nota) => <NotaVoce nota={nota} onselect={() => setNotaSelto(nota)} />}</For>
+          <For each={note().sort((a,b) => b.d_time - a.d_time)}>{(nota) => <NotaVoce nota={nota} onselect={() => setNotaSelto(nota)} />}</For>
         </div>
         <div class="right panel">
           <Show when={notaSelto()}>

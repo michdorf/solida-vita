@@ -11,7 +11,7 @@ export default function NotaVoce(params: {nota: Nota, onselect?: () => void}) {
                 </Show>
                 <br />
                 <Show when={!params.nota.enc_versione} fallback={"Locked"}>
-                    <i>{params.nota.contenuto.substring(0,58)}</i>
+                    <i>{params.nota.contenuto.substring(0,400)}</i>
                 </Show>
             </div>
         </a>
