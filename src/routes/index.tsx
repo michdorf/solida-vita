@@ -6,16 +6,20 @@ import Memo from "~/moduli/memo/memo";
 import note from "~/stores/note";
 import NotaVoce from "~/components/NotaVoce";
 import Nota from "~/interface/nota";
+import {isServer} from "solid-js/web";
 
 let memo: Memo;
 export default function Home() {
   const [notaSelto, setNotaSelto] = createSignal<Nota>();
 
-  if (typeof window !== "undefined") {
-    memo = initMemo();
+  if (!isServer) {
+    try {
+      memo = initMemo();
+      autoLogin();
+    } catch (e) {
+      console.error(e);
+    }
   }
-
-  autoLogin();
   function login() {
     oauthclient.authorizationCode("");
   }
