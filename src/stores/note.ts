@@ -11,7 +11,6 @@ export function initNoteStore(memo: Memo) {
     carica_note(memo);
 
     memo.senti("note", function (tipo, riga: Nota) {
-        debugger;
         switch (tipo) {
             case UPDATE_TIPO.INSERIMENTO:
                 setNote(note => [...note, riga]);
@@ -32,8 +31,8 @@ export function initNoteStore(memo: Memo) {
 
 function carica_note(memo: Memo) {
     memo.seleziona("note").then(function (righe: any) {
-        var rnote = [];
-        for (var i = 0; i < righe.length; i++) {
+        let rnote = [];
+        for (let i = 0; i < righe.length; i++) {
         if (righe[i].eliminatoil) {
             continue;
         }
