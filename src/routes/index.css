@@ -9,7 +9,6 @@ main {
   padding: 0em;
   margin: 0 auto;
   height: 100vh;
-  margin: 0;
 }
 
 main > .header {
@@ -26,6 +25,7 @@ main .panel-cont {
 
 .panel-cont .panel {
   height: 100%;
+  overflow: auto;
 }
 .panel-cont .panel.left {
   width: 328px;
@@ -41,7 +41,7 @@ h1 {
   font-size: 3rem;
   font-weight: 100;
   line-height: 1.1;
-  margin: 0rem auto;
+  margin: 0 auto;
   max-width: 14rem;
 }
 
