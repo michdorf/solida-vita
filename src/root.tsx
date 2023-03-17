@@ -11,6 +11,7 @@ import {
   Title,
 } from "solid-start";
 import { ErrorBoundary } from "solid-start/error-boundary";
+import "./externals/mrypt.js";
 
 // <script type="text/javascript" src="/dist.js"></script>
 export default function Root() {
