@@ -1,5 +1,5 @@
 import "./index.css";
-import {createEffect, createSignal, For, Show} from "solid-js";
+import { createSignal, For, Show} from "solid-js";
 import initMemo from "~/lib/db";
 import oauthclient, { autoLogin, oauthStatus } from "~/lib/oauth";
 import Memo from "~/moduli/memo/memo";
@@ -8,19 +8,20 @@ import NotaVoce from "~/components/NotaVoce";
 import Nota from "~/components/Nota";
 import NotaT from "~/interface/nota";
 import {isServer} from "solid-js/web";
+import codice, {decrypt} from "~/stores/codice";
 
+export type TPlainNota = NotaT & {plain: string}
 let memo: Memo;
 export default function Home() {
   const [notaSelto, setNotaSelto] = createSignal<NotaT>();
 
+  const plainSelto = () => notaSelto() ? Object.assign({plain: decrypt(notaSelto()?.contenuto || "", notaSelto()?.enc_versione)}, notaSelto()) : undefined;
+
   if (!isServer) {
-    try {
-      memo = initMemo();
-      autoLogin();
-    } catch (e) {
-      console.error(e);
-    }
+    memo = initMemo();
+    autoLogin().catch(e => console.error(e));
   }
+
   function login() {
     oauthclient.authorizationCode("");
   }
@@ -35,10 +36,10 @@ export default function Home() {
           <For each={note().sort((a,b) => b.d_time - a.d_time)}>{(nota) => <NotaVoce nota={nota} onselect={() => setNotaSelto(nota)} />}</For>
         </div>
         <div class="right panel">
-          <Show when={notaSelto()}>
-            <Nota nota={notaSelto()} />
-          </Show>
-          <Show when={oauthStatus() !== "authorized"}>
+          <Show when={plainSelto()} keyed>{(plainNota) =>
+            <Nota nota={plainNota} />
+          }</Show>
+          <Show when={oauthStatus() !== "authorized"} keyed={false}>
             <button onclick={login}>Login</button>
           </Show>
         </div>

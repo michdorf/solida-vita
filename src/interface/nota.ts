@@ -1,6 +1,6 @@
 import IMemoTabella from "~/moduli/memo/memotabella.interface";
 
-export default interface Nota extends IMemoTabella {
+export default interface INota extends IMemoTabella {
     titolo:string;
     contenuto: string;
     d_time: number;

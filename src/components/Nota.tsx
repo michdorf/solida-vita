@@ -1,7 +1,9 @@
-import NotaT from "~/interface/nota";
+import INota from "~/interface/nota";
 import {Show} from "solid-js";
+import ContentEdit from "~/components/ContentEdit";
+import {TPlainNota} from "~/routes";
 
-export default function Nota(params: {nota: NotaT | undefined}) {
+export default function Nota(params: {nota: TPlainNota}) {
     return (
         <div style="display: flex; flex-direction: column; height: 100%">
             <div>
@@ -10,7 +12,7 @@ export default function Nota(params: {nota: NotaT | undefined}) {
                 </Show>
             </div>
             <div style="flex: 1">
-                <textarea style={{height: "100%", width: "100%"}} placeholder="Cosa hai in mente?" class="contenuto">{params.nota?.contenuto}</textarea><br/>
+                <ContentEdit nota={params.nota}></ContentEdit>
             </div>
         </div>
     )
