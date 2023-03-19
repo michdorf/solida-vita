@@ -28,8 +28,12 @@ export function autoLogin() {
                     'Authorization': 'Bearer ' + token
                 })
             }).then(async (response) => {
-                let resp = await response.json();
-                if ('error' in resp) {
+                let resp: string | object = await response.text();
+                if (resp[0] === "{") {
+                    resp = JSON.parse(resp);
+                }
+                let nonEntrato = (typeof resp === "object" ? 'error' in resp : resp.substring(0,6) === "ERRORE");
+                if (nonEntrato) {
                     console.error("Resource error: " + (typeof resp !== "string" ? JSON.stringify(resp) : resp));
                     oauthclient.refreshToken().then((accesstoken) => {
                         console.info(`refreshed`);

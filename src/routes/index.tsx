@@ -37,7 +37,7 @@ export default function Home() {
         </div>
         <div class="right panel">
           <Show when={plainSelto()} keyed>{(plainNota) =>
-            <Nota nota={plainNota} />
+            <Nota nota={plainNota} onUpdate={val => console.log("Cambiato ", val)} />
           }</Show>
           <Show when={oauthStatus() !== "authorized"} keyed={false}>
             <button onclick={login}>Login</button>
