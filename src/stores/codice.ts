@@ -1,16 +1,25 @@
 import {createSignal} from "solid-js";
+declare let cifra: any;
 
 const [codice, setCodice] = createSignal("");
+const [cifErrore, setCifErrore] = createSignal(false);
 
 export function decrypt(input: string, enc_versione?: number) {
+    if (!enc_versione) {
+        return input;
+    }
     if (!codice()) {
         location.href = "/unlock";
         return "";
     } else {
-        if (!enc_versione) {
-            return input;
+        const dez = cifra.dec(input, codice(), enc_versione);
+        if (typeof dez === "object" && 'check' in dez) {
+            if (!dez.check) {
+                setCifErrore(true);
+                console.error("Error con decifrazione");
+            }
         }
-        return cifra.dec(input, codice(), enc_versione).ret;;
+        return typeof dez === "string" ? dez : dez.ret;
     }
 }
 
