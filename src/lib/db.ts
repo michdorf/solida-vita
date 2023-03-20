@@ -6,10 +6,11 @@ import oauthclient, { oauthStatus } from "./oauth";
 
 export default function initMemo() {
     // if (typeof window !== "undefined") {
-        let memo = new Memo("vita", ["note"], [["d_time","cambiato"]]);
+        let memo = new Memo("vita", ["note","persone","quaderni"], [["d_time","cambiato"],["cambiato"],["cambiato"]]);
         memo.sinc.pausa_sinc();
         memo.sinc.endpoint = "/vita/api/sinc.php";
         memo.sinc.access_token = "";
+        
         memo.suPronto(() => {
             console.log("Klar");
             initNoteStore(memo);
