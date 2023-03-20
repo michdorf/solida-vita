@@ -29,6 +29,7 @@
     "vitest": "^0.26.3"
   },
   "dependencies": {
-    "solid-start-vercel": "^0.2.23"
+    "solid-start-vercel": "^0.2.23",
+    "tributejs": "^5.1.3"
   }
 }

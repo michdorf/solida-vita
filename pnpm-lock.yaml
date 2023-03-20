@@ -13,6 +13,7 @@ specifiers:
   solid-start: ^0.2.19
   solid-start-node: ^0.2.19
   solid-start-vercel: ^0.2.23
+  tributejs: ^5.1.3
   typescript: ^4.9.4
   undici: ^5.15.1
   vite: ^4.1.4
@@ -20,6 +21,7 @@ specifiers:
 
 dependencies:
   solid-start-vercel: 0.2.23_if7ohanqzn44ptg5rbhz3hdfky
+  tributejs: 5.1.3
 
 devDependencies:
   '@solidjs/meta': 0.28.2_solid-js@1.6.12
@@ -4172,6 +4174,10 @@ packages:
     dependencies:
       punycode: 2.3.0
     dev: true
+
+  /tributejs/5.1.3:
+    resolution: {integrity: sha512-B5CXihaVzXw+1UHhNFyAwUTMDk1EfoLP5Tj1VhD9yybZ1I8DZJEv8tZ1l0RJo0t0tk9ZhR8eG5tEsaCvRigmdQ==}
+    dev: false
 
   /trouter/3.2.1:
     resolution: {integrity: sha512-oY3CmIiEYOe1YMEzh++I67lrNOUldtCeuLL0vRPydvQLHZpSJ03B5dgDFlpFsiriMq6e//NDjjopjUzXOztHow==}

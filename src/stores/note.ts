@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 import { UPDATE_TIPO } from "~/moduli/memo/memo";
 import Memo from "~/moduli/memo/memo";
-import INota from "~/interface/nota";
+import type INota from "~/interface/nota";
 export {INota};
 
 const [note, setNote] = createSignal<INota[]>([]);

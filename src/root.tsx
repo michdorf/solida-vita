@@ -11,6 +11,7 @@ import {
   Title,
 } from "solid-start";
 import { ErrorBoundary } from "solid-start/error-boundary";
+import 'tributejs/dist/tribute.css';
 
 // <script type="text/javascript" src="/dist.js"></script>
 export default function Root() {
