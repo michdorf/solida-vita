@@ -5,7 +5,7 @@ import Tribute from "tributejs";
 import {onMount} from "solid-js";
 
 export default function ContentEdit(params: {nota: TPlainNota, onUpdate: (val: string) => void}) {
-    let divEl: HTMLDivElement;
+    let divEl: HTMLDivElement | undefined;
 
     let tribute = new Tribute({
         trigger: '@',
@@ -29,7 +29,8 @@ export default function ContentEdit(params: {nota: TPlainNota, onUpdate: (val: s
     }
 
     onMount(() => {
-       tribute.attach(divEl);
+        if (!divEl) {return}
+        tribute.attach(divEl);
     });
 
     return (
