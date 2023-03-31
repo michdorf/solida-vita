@@ -8,7 +8,9 @@ import NotaVoce from "~/components/NotaVoce";
 import Nota from "~/components/Nota";
 import NotaT from "~/interface/nota";
 import {isServer} from "solid-js/web";
-import codice, {decrypt} from "~/stores/codice";
+import {decrypt} from "~/stores/codice";
+import INota from "~/interface/nota";
+import {debounce} from "~/moduli/moduli/webapp.helper";
 
 export type TPlainNota = NotaT & {plain: string}
 let memo: Memo;
@@ -22,6 +24,22 @@ export default function Home() {
     autoLogin().catch(e => console.error(e));
   }
 
+  let cambiato = false;
+  let salva = /*debounce ??*/(nota: INota) => {
+    cambiato = true;
+    salvaNota(nota);
+  }
+
+  function seleziona(nota: INota) {
+    if (cambiato && !confirm("Eliminare cambiamenti?")) {
+      return;
+    }else {
+      cambiato = false;
+    }
+
+    setNotaSelto(nota);
+  }
+
   function login() {
     oauthclient.authorizationCode("");
   }
@@ -33,11 +51,11 @@ export default function Home() {
       </div>
       <div class="panel-cont">
         <div class="left panel">
-          <For each={note().sort((a,b) => b.d_time - a.d_time)}>{(nota) => <NotaVoce nota={nota} onselect={() => setNotaSelto(nota)} />}</For>
+          <For each={note().sort((a,b) => b.d_time - a.d_time)}>{(nota) => <NotaVoce nota={nota} onselect={() => seleziona(nota)} />}</For>
         </div>
         <div class="right panel">
           <Show when={plainSelto()} keyed>{(plainNota) =>
-            <Nota nota={plainNota} onUpdate={val => salvaNota(val)} />
+            <Nota nota={plainNota} onUpdate={val => salva(val)} />
           }</Show>
           <Show when={oauthStatus() !== "authorized"} keyed={false}>
             <button onclick={login}>Login</button>

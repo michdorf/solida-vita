@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import {createEffect, createSignal} from "solid-js";
 import { UPDATE_TIPO } from "~/moduli/memo/memo";
 import Memo from "~/moduli/memo/memo";
 import type INota from "~/interface/nota";
@@ -7,10 +7,14 @@ export {INota};
 const [note, setNote] = createSignal<INota[]>([]);
 export default note;
 
-export function initNoteStore(memo: Memo) {
-    carica_note(memo);
+let memo: Memo;
+export function initNoteStore(memoArg: Memo) {
+    memo = memoArg;
+    carica_note(memoArg);
 
-    memo.senti("note", function (tipo, riga: INota) {
+    initMemoEffect();
+
+    memoArg.senti("note", function (tipo, riga: INota) {
         switch (tipo) {
             case UPDATE_TIPO.INSERIMENTO:
                 setNote(note => [...note, riga]);
@@ -58,4 +62,10 @@ export function salvaNota(nota: INota) {
     if (!trovato) {
         setNote([...note(), nota]);
     }
+}
+
+function initMemoEffect() {
+    createEffect(() => {
+        console.log("Camb in note:", note());
+    })
 }
