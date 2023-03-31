@@ -42,3 +42,20 @@ function carica_note(memo: Memo) {
         // app.note.sort(function (a, b) { return b.d_time - a.d_time });
     });
 }
+
+export function salvaNota(nota: INota) {
+    let trovato = false;
+    setNote(note => {
+        return note.map(n => {
+            if (n.UUID === nota.UUID) {
+                trovato = true;
+                return nota;
+            } else {
+                return n;
+            }
+        });
+    });
+    if (!trovato) {
+        setNote([...note(), nota]);
+    }
+}

@@ -3,7 +3,7 @@ import { createSignal, For, Show} from "solid-js";
 import initMemo from "~/lib/db";
 import oauthclient, { autoLogin, oauthStatus } from "~/lib/oauth";
 import Memo from "~/moduli/memo/memo";
-import note from "~/stores/note";
+import note, {salvaNota} from "~/stores/note";
 import NotaVoce from "~/components/NotaVoce";
 import Nota from "~/components/Nota";
 import NotaT from "~/interface/nota";
@@ -37,7 +37,7 @@ export default function Home() {
         </div>
         <div class="right panel">
           <Show when={plainSelto()} keyed>{(plainNota) =>
-            <Nota nota={plainNota} onUpdate={val => console.log("Cambiato ", val)} />
+            <Nota nota={plainNota} onUpdate={val => salvaNota(val)} />
           }</Show>
           <Show when={oauthStatus() !== "authorized"} keyed={false}>
             <button onclick={login}>Login</button>
