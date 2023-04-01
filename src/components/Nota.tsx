@@ -1,7 +1,10 @@
 import INota from "~/interface/nota";
 import {Show} from "solid-js";
-import ContentEdit from "~/components/ContentEdit";
 import {TPlainNota} from "~/routes";
+import { unstable_clientOnly } from "solid-start";
+
+// ContentEdit usa tributejs che ha if (window) (invece di `typeof window`) che non funziona su server
+const ContentEdit = unstable_clientOnly(() => import("~/components/ContentEdit"));
 
 export default function Nota(params: {nota: TPlainNota, onUpdate: (val: TPlainNota) => void, onSalva: () => void}) {
     function onUpdate(contenuto: string) {
