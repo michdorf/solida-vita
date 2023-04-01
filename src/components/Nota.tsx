@@ -3,7 +3,7 @@ import {Show} from "solid-js";
 import ContentEdit from "~/components/ContentEdit";
 import {TPlainNota} from "~/routes";
 
-export default function Nota(params: {nota: TPlainNota, onUpdate: (val: INota) => void}) {
+export default function Nota(params: {nota: TPlainNota, onUpdate: (val: TPlainNota) => void, onSalva: () => void}) {
     function onUpdate(contenuto: string) {
         params.onUpdate(Object.assign(params.nota, {plain: contenuto}));
     }
@@ -17,6 +17,9 @@ export default function Nota(params: {nota: TPlainNota, onUpdate: (val: INota) =
             </div>
             <div style="flex: 1">
                 <ContentEdit nota={params.nota} onUpdate={val => onUpdate(val)}></ContentEdit>
+            </div>
+            <div style={{'text-align': 'right'}}>
+                <button onclick={params.onSalva}>Salva</button>
             </div>
         </div>
     )

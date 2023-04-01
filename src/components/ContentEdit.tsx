@@ -1,4 +1,3 @@
-import INota from "~/interface/nota";
 import {clean_html, getHashtagRegEx} from "~/ts/vita";
 import {TPlainNota} from "~/routes";
 import Tribute from "tributejs";
@@ -34,7 +33,7 @@ export default function ContentEdit(params: {nota: TPlainNota, onUpdate: (val: s
     });
 
     return (
-            <div ref={divEl} style={{height: "100%", width: "100%"}}
+            <div ref={divEl} style={{height: "100%", width: "100%", 'overflow-y': 'auto'}}
                  contenteditable={true}
                  class="contenuto"
                  innerHTML={htmlContenuto()}

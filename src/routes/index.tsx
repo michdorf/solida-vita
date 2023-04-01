@@ -3,7 +3,7 @@ import { createSignal, For, Show} from "solid-js";
 import initMemo from "~/lib/db";
 import oauthclient, { autoLogin, oauthStatus } from "~/lib/oauth";
 import Memo from "~/moduli/memo/memo";
-import note, {salvaNota} from "~/stores/note";
+import note, {salvaInDb as memoSalvaInDb, salvaNota} from "~/stores/note";
 import NotaVoce from "~/components/NotaVoce";
 import Nota from "~/components/Nota";
 import NotaT from "~/interface/nota";
@@ -12,10 +12,12 @@ import {decrypt} from "~/stores/codice";
 import INota from "~/interface/nota";
 import {debounce} from "~/moduli/moduli/webapp.helper";
 
-export type TPlainNota = NotaT & {plain: string}
+export type TPlainNota = NotaT & {plain?: string}
 let memo: Memo;
 export default function Home() {
-  const [notaSelto, setNotaSelto] = createSignal<NotaT>();
+  const [notaSelto, setNotaSelto] = createSignal<INota>();
+  const [notaEditato, setNotaEditato] = createSignal<TPlainNota>();
+  // let notaSelto = () => note().filter(n => n.UUID === notaIdSelto())[0] || undefined;
 
   const plainSelto = () => notaSelto() ? Object.assign({plain: decrypt(notaSelto()?.contenuto || "", notaSelto()?.enc_versione)}, notaSelto()) : undefined;
 
@@ -25,13 +27,24 @@ export default function Home() {
   }
 
   let cambiato = false;
-  let salva = /*debounce ??*/(nota: INota) => {
+  let salva = /*debounce ??*/(nota: TPlainNota) => {
     cambiato = true;
+    setNotaEditato(nota);
     salvaNota(nota);
   }
 
-  function seleziona(nota: INota) {
-    if (cambiato && !confirm("Eliminare cambiamenti?")) {
+  function salvaInDb() {
+    let notaSelez = notaEditato();
+    if (!notaSelez) {
+      return;
+    }
+    memoSalvaInDb(notaSelez);
+    cambiato = false;
+  }
+
+  function seleziona(nota: TPlainNota) {
+    if (cambiato && !confirm("Salva prima di chiudere?")) {
+      salvaInDb();
       return;
     }else {
       cambiato = false;
@@ -55,7 +68,7 @@ export default function Home() {
         </div>
         <div class="right panel">
           <Show when={plainSelto()} keyed>{(plainNota) =>
-            <Nota nota={plainNota} onUpdate={val => salva(val)} />
+            <Nota nota={plainNota} onUpdate={val => salva(val)} onSalva={salvaInDb} />
           }</Show>
           <Show when={oauthStatus() !== "authorized"} keyed={false}>
             <button onclick={login}>Login</button>

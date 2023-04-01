@@ -23,5 +23,17 @@ export function decrypt(input: string, enc_versione?: number) {
     }
 }
 
+export function encrypt(input: string, enc_versione: number = 2) {
+    if (!enc_versione) {
+        return input;
+    }
+    if (!codice()) {
+        location.href = "/unlock";
+        return "";
+    } else {
+        return cifra.enc(input, codice(), enc_versione);
+    }
+}
+
 export default codice;
 export {setCodice};

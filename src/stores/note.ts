@@ -2,6 +2,8 @@ import {createEffect, createSignal} from "solid-js";
 import { UPDATE_TIPO } from "~/moduli/memo/memo";
 import Memo from "~/moduli/memo/memo";
 import type INota from "~/interface/nota";
+import {TPlainNota} from "~/routes";
+import {encrypt} from "~/stores/codice";
 export {INota};
 
 const [note, setNote] = createSignal<INota[]>([]);
@@ -47,7 +49,7 @@ function carica_note(memo: Memo) {
     });
 }
 
-export function salvaNota(nota: INota) {
+export function salvaNota(nota: TPlainNota) {
     let trovato = false;
     setNote(note => {
         return note.map(n => {
@@ -64,8 +66,27 @@ export function salvaNota(nota: INota) {
     }
 }
 
+export function salvaInDb(nota: TPlainNota, nuova: boolean = false) {
+    const enc_versione = 2;
+    const clone = Object.assign({}, nota);
+    if (!clone.plain) {
+        console.error("Nota plain non definita. Forse non hai decriptato.");
+        return;
+    }
+    clone.contenuto = encrypt(clone.plain, enc_versione);
+    clone.enc_versione = enc_versione;
+    if (!(delete clone.plain)) {
+        console.error("Error removing plain when saving to DB");
+    }
+    if (nuova) {
+        memo.inserisci('note', clone);
+    } else {
+        memo.update<INota>('note', clone.UUID, clone);
+    }
+}
+
 function initMemoEffect() {
     createEffect(() => {
-        console.log("Camb in note:", note());
+        // console.log("Camb in note:", note());
     })
 }
