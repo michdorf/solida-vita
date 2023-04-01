@@ -1,6 +1,6 @@
-import IMemoTabella from "~/moduli/memo/memotabella.interface";
+import IMemoRiga from "~/moduli/memo/memoriga.interface";
 
-export default interface INota extends IMemoTabella {
+export default interface INota extends IMemoRiga {
     titolo:string;
     contenuto: string;
     d_time: number;
