@@ -1,0 +1,27 @@
+.dropbtn {
+font-size: 16px;
+}
+
+.dropdown {
+position: relative;
+display: inline-block;
+z-index: initial;
+}
+
+.dropdown.open {
+    z-index: 1;
+}
+
+.dropdownContent {
+display: none;
+position: absolute;
+background-color: #f1f1f1;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.dropdownContent.rightAligned {
+    right: 0;
+}
+
+.dropdown.open .dropdownContent {
+    display: block;
+}

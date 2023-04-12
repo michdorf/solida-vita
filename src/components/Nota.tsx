@@ -10,13 +10,14 @@ export default function Nota(params: {nota: TPlainNota, onUpdate: (val: TPlainNo
     function onUpdate(contenuto: string) {
         params.onUpdate(Object.assign(params.nota, {plain: contenuto}));
     }
+    function updateTitle(title: string) {
+        params.onUpdate(Object.assign(params.nota, {titolo: title}));
+    }
 
     return (
         <div style="display: flex; flex-direction: column; height: 100%">
             <div>
-                <Show when={params.nota?.titolo} fallback={<h1>No title</h1>}>
-                    <h1>{params.nota?.titolo}</h1>
-                </Show>
+                <h1><input value={params.nota?.titolo} onchange={ev => updateTitle(ev.currentTarget.value)} /></h1>
             </div>
             <div style="flex: 1">
                 <ContentEdit nota={params.nota} onUpdate={val => onUpdate(val)}></ContentEdit>

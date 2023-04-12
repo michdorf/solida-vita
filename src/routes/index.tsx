@@ -3,17 +3,20 @@ import { createSignal, For, Show} from "solid-js";
 import initMemo from "~/lib/db";
 import oauthclient, { autoLogin, oauthStatus } from "~/lib/oauth";
 import Memo from "~/moduli/memo/memo";
-import note, {salvaInDb as memoSalvaInDb, salvaNota} from "~/stores/note";
+import note, {salvaInDb as memoSalvaInDb, nuovaNota as nuovaNotaStore, salvaNota} from "~/stores/note";
 import NotaVoce from "~/components/NotaVoce";
 import Nota from "~/components/Nota";
 import NotaT from "~/interface/nota";
 import {isServer} from "solid-js/web";
 import {decrypt} from "~/stores/codice";
 import INota from "~/interface/nota";
+import DropdownBtn from "~/components/dropmenu";
 
-export type TPlainNota = NotaT & {plain?: string}
+export type TPlainNota = NotaT & {plain?: string, nuova?: boolean}
 let memo: Memo;
 export default function Home() {
+  const quaderno = "mm"; //FIXX
+
   const [notaSelto, setNotaSelto] = createSignal<INota>();
   const [notaEditato, setNotaEditato] = createSignal<TPlainNota>();
   // let notaSelto = () => note().filter(n => n.UUID === notaIdSelto())[0] || undefined;
@@ -30,6 +33,11 @@ export default function Home() {
     cambiato = true;
     setNotaEditato(nota);
     salvaNota(nota);
+  }
+
+  function nuovaNota(quaderno: string) {
+    const nota = nuovaNotaStore(quaderno);
+    setNotaEditato(nota);
   }
 
   function salvaInDb() {
@@ -60,6 +68,12 @@ export default function Home() {
     <main style="display: flex; flex-direction: column">
       <div class="header">
         <h1>Notes</h1>
+        <div style={{'position':'absolute', right: 0, top: '1rem'}}>
+          <button onClick={() => nuovaNota(quaderno)}>Add</button>
+          <DropdownBtn alignRight={true}>
+            <button onClick={() => memo.riazzera()}>Nulstil</button>  
+          </DropdownBtn>
+        </div>
       </div>
       <div class="panel-cont">
         <div class="left panel">

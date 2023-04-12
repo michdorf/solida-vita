@@ -64,9 +64,26 @@ export function salvaNota(nota: TPlainNota) {
     if (!trovato) {
         setNote([...note(), nota]);
     }
+    return nota;
 }
 
-export function salvaInDb(nota: TPlainNota, nuova: boolean = false) {
+export function nuovaNota(quaderno: string) {
+    let nota: TPlainNota = {
+        nuova: true,
+        UUID: memo.uuid(),
+        titolo: '',
+        contenuto: '',
+        enc_versione: 0,
+        plain: '',
+        pinned: false,
+        quaderno: quaderno,
+        d_time: Date.now()
+    };
+
+    return salvaNota(nota);
+}
+
+export function salvaInDb(nota: TPlainNota) {
     const enc_versione = 2;
     const clone = Object.assign({}, nota);
     if (clone.plain) {
@@ -77,7 +94,8 @@ export function salvaInDb(nota: TPlainNota, nuova: boolean = false) {
     if (!(delete clone.plain)) {
         console.error("Error removing plain when saving to DB");
     }
-    if (nuova) {
+    if (nota.nuova) {
+        delete clone.nuova;
         memo.inserisci('note', clone);
     } else {
         memo.update<INota>('note', clone.UUID, clone);
