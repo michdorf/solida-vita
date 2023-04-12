@@ -69,12 +69,11 @@ export function salvaNota(nota: TPlainNota) {
 export function salvaInDb(nota: TPlainNota, nuova: boolean = false) {
     const enc_versione = 2;
     const clone = Object.assign({}, nota);
-    if (!clone.plain) {
-        console.error("Nota plain non definita. Forse non hai decriptato.");
-        return;
+    if (clone.plain) {
+        console.warn("Nota plain non definita. Forse non hai decriptato.");
+        clone.contenuto = encrypt(clone.plain, enc_versione);
+        clone.enc_versione = enc_versione;
     }
-    clone.contenuto = encrypt(clone.plain, enc_versione);
-    clone.enc_versione = enc_versione;
     if (!(delete clone.plain)) {
         console.error("Error removing plain when saving to DB");
     }

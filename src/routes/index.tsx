@@ -10,7 +10,6 @@ import NotaT from "~/interface/nota";
 import {isServer} from "solid-js/web";
 import {decrypt} from "~/stores/codice";
 import INota from "~/interface/nota";
-import {debounce} from "~/moduli/moduli/webapp.helper";
 
 export type TPlainNota = NotaT & {plain?: string}
 let memo: Memo;
@@ -64,7 +63,9 @@ export default function Home() {
       </div>
       <div class="panel-cont">
         <div class="left panel">
-          <For each={note().sort((a,b) => b.d_time - a.d_time)}>{(nota) => <NotaVoce nota={nota} onselect={() => seleziona(nota)} />}</For>
+          <For each={note().sort((a,b) => b.d_time - a.d_time)}>{(nota) => 
+            <NotaVoce nota={nota} onselect={() => seleziona(nota)} onpin={(pin) => {memoSalvaInDb(Object.assign(nota, {pinned: pin}))}} />
+          }</For>
         </div>
         <div class="right panel">
           <Show when={plainSelto()} keyed>{(plainNota) =>

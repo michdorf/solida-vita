@@ -8,7 +8,7 @@ export default function NotaVoce(props: {nota: Nota, onselect?: () => void, onpi
     return (
         <a class="nota voce" onClick={props.onselect}>
             <div style={{display: "flex"}}>
-            <div><input type='checkbox' checked={props.nota.pinned} onchange={(event) => onpin(event.currentTarget.checked)} /></div>
+            <div><input type='checkbox' checked={props.nota.pinned} onchange={(event) => onpin(event.currentTarget.checked)} onclick={(e) => e.stopPropagation()} /></div>
             <div style="flex: 1">
                 <Show when={props.nota.titolo} fallback={<b>No title</b>}>
                     <b>{props.nota.titolo}</b>
