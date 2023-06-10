@@ -9,6 +9,9 @@ export {INota};
 const [note, setNote] = createSignal<INota[]>([]);
 export default note;
 
+export const [notaSelto, setNotaSelto] = createSignal<INota>();
+export const [notaEditato, setNotaEditato] = createSignal<TPlainNota>();
+
 let memo: Memo;
 export function initNoteStore(memoArg: Memo) {
     memo = memoArg;

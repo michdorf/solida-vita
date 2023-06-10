@@ -3,10 +3,14 @@ import { createEffect } from "solid-js";
 import { initNoteStore } from "~/stores/note";
 import Memo from "../moduli/memo/memo"
 import oauthclient, { oauthStatus } from "./oauth";
+import { setMemoIst } from "~/stores/memo";
+import { initQuaderni } from "~/stores/quaderni";
 
+let memo: Memo;
 export default function initMemo() {
     // if (typeof window !== "undefined") {
-        let memo = new Memo("vita", ["note","persone","quaderni"], [["d_time","cambiato"],["cambiato"],["cambiato"]]);
+        memo = new Memo("vita", ["note","persone","quaderni"], [["d_time","cambiato"],["cambiato"],["cambiato"]]);
+        setMemoIst(memo);
         memo.sinc.pausa_sinc();
         memo.sinc.endpoint = "/vita/api/sinc.php";
         memo.sinc.access_token = "";
@@ -14,6 +18,7 @@ export default function initMemo() {
         memo.suPronto(() => {
             console.log("Klar");
             initNoteStore(memo);
+            initQuaderni(memo);
         });
     
         createEffect(() => {
@@ -27,4 +32,20 @@ export default function initMemo() {
         })
     // }
     return memo; 
+}
+
+export function caricaDaDb(nomeTabella: string) {
+    return new Promise((resolve) => {
+        memo.seleziona(nomeTabella).then(function (righe: any) {
+            let r = [];
+            for (let i = 0; i < righe.length; i++) {
+            if (righe[i].eliminatoil) {
+                continue;
+            }
+            r.push(righe[i]);
+            }
+            
+            resolve(r);
+        });
+    });
 }

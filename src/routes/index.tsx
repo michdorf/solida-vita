@@ -3,8 +3,10 @@ import { createSignal, For, Show} from "solid-js";
 import initMemo from "~/lib/db";
 import oauthclient, { autoLogin, oauthStatus } from "~/lib/oauth";
 import Memo from "~/moduli/memo/memo";
-import note, {salvaInDb as memoSalvaInDb, nuovaNota as nuovaNotaStore, salvaNota} from "~/stores/note";
+import note, {salvaInDb as memoSalvaInDb, notaEditato, notaSelto, nuovaNota as nuovaNotaStore, salvaNota, setNotaEditato, setNotaSelto} from "~/stores/note";
 import NotaVoce from "~/components/NotaVoce";
+import NotaLista from '~/components/leftpanel/note'
+import QuaderniLista from '~/components/leftpanel/quaderni'
 import Nota from "~/components/Nota";
 import NotaT from "~/interface/nota";
 import {isServer} from "solid-js/web";
@@ -15,10 +17,6 @@ import DropdownBtn from "~/components/dropmenu";
 export type TPlainNota = NotaT & {plain?: string, nuova?: boolean}
 let memo: Memo;
 export default function Home() {
-  const quaderno = "mm"; //FIXX
-
-  const [notaSelto, setNotaSelto] = createSignal<INota>();
-  const [notaEditato, setNotaEditato] = createSignal<TPlainNota>();
   // let notaSelto = () => note().filter(n => n.UUID === notaIdSelto())[0] || undefined;
 
   const plainSelto = () => notaSelto() ? Object.assign({plain: decrypt(notaSelto()?.contenuto || "", notaSelto()?.enc_versione)}, notaSelto()) : undefined;
@@ -33,11 +31,6 @@ export default function Home() {
     cambiato = true;
     setNotaEditato(nota);
     salvaNota(nota);
-  }
-
-  function nuovaNota(quaderno: string) {
-    const nota = nuovaNotaStore(quaderno);
-    setNotaEditato(nota);
   }
 
   function salvaInDb() {
@@ -60,6 +53,11 @@ export default function Home() {
     setNotaSelto(nota);
   }
 
+  const [mostraQuaderni, setMostraQuaderni] = createSignal(false);
+  function toggleQuaderni() {
+    setMostraQuaderni(b => !b);
+  }
+
   function login() {
     oauthclient.authorizationCode("");
   }
@@ -67,9 +65,11 @@ export default function Home() {
   return (
     <main style="display: flex; flex-direction: column">
       <div class="header">
+        <div style={{'position':'absolute', left: 0, top: '1rem'}}>
+          <button onClick={toggleQuaderni}>Quaderni</button>
+        </div>
         <h1>Notes</h1>
         <div style={{'position':'absolute', right: 0, top: '1rem'}}>
-          <button onClick={() => nuovaNota(quaderno)}>Add</button>
           <DropdownBtn alignRight={true}>
             <button onClick={() => memo.riazzera()}>Nulstil</button>  
           </DropdownBtn>
@@ -77,9 +77,9 @@ export default function Home() {
       </div>
       <div class="panel-cont">
         <div class="left panel">
-          <For each={note().sort((a,b) => b.d_time - a.d_time)}>{(nota) => 
-            <NotaVoce nota={nota} onselect={() => seleziona(nota)} onpin={(pin) => {memoSalvaInDb(Object.assign(nota, {pinned: pin}))}} />
-          }</For>
+          <Show when={mostraQuaderni()} fallback={<NotaLista onSelected={seleziona}></NotaLista>}>
+            <QuaderniLista></QuaderniLista>
+          </Show>
         </div>
         <div class="right panel">
           <Show when={plainSelto()} keyed>{(plainNota) =>
