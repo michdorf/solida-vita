@@ -19,8 +19,6 @@ export default function QuadernoSelect(props: {quadernoId?: string, onChange: (u
         props.onChange(value);
     }
 
-    const modal = document.getElementById("modal");
-
     return (
         <>
         {/* props.quadernoId */}
