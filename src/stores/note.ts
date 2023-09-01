@@ -17,8 +17,6 @@ export function initNoteStore(memoArg: Memo) {
     memo = memoArg;
     carica_note(memoArg);
 
-    initMemoEffect();
-
     memoArg.senti("note", function (tipo, riga: INota) {
         switch (tipo) {
             case UPDATE_TIPO.INSERIMENTO:
@@ -89,8 +87,9 @@ export function nuovaNota(quaderno: string) {
 export function salvaInDb(nota: TPlainNota) {
     const enc_versione = 2;
     const clone = Object.assign({}, nota);
-    if (clone.plain) {
+    if (!clone.plain) {
         console.warn("Nota plain non definita. Forse non hai decriptato.");
+    } else if (clone.plain) {
         clone.contenuto = encrypt(clone.plain, enc_versione);
         clone.enc_versione = enc_versione;
     }
@@ -103,10 +102,4 @@ export function salvaInDb(nota: TPlainNota) {
     } else {
         memo.update<INota>('note', clone.UUID, clone);
     }
-}
-
-function initMemoEffect() {
-    createEffect(() => {
-        // console.log("Camb in note:", note());
-    })
 }
