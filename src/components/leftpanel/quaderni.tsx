@@ -1,8 +1,9 @@
-import { For, Show } from "solid-js"
+import { For, Show, createSignal } from "solid-js"
 import QuadernoForm from "./quadernoform"
 import quaderni, { salvaQuaderno } from "~/stores/quaderni"
+import QuadernoSelect from "../quaderno-select"
 
-export default function Quaderni() {
+export default function Quaderni() {    
     return (
         <>
         <button>Nuovo quaderno</button>
