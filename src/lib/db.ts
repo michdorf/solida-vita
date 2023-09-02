@@ -5,6 +5,7 @@ import Memo from "../moduli/memo/memo"
 import oauthclient, { oauthStatus } from "./oauth";
 import { setMemoIst } from "~/stores/memo";
 import { initQuaderni } from "~/stores/quaderni";
+import { initPersone } from "~/stores/persone";
 
 let memo: Memo;
 export default function initMemo() {
@@ -19,6 +20,7 @@ export default function initMemo() {
             console.log("Klar");
             initNoteStore(memo);
             initQuaderni(memo);
+            initPersone(memo);
         });
     
         createEffect(() => {

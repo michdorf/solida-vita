@@ -11,7 +11,7 @@ export function initQuaderni(memoA: Memo) {
     caricaDaDb('quaderni').then(qs => setQuaderni(qs as IQuaderno[]));
 }
 
-export function nuovoQuaderno() {
+export function nuovoQuaderno(): IQuaderno {
     let UUID = memo ? memo.uuid() : (Math.random() + 1).toString(36).substring(7);
 
     return {

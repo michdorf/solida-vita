@@ -1,9 +1,6 @@
-import INota from "~/interface/nota";
-import {Show} from "solid-js";
 import {TPlainNota} from "~/routes";
 import { unstable_clientOnly } from "solid-start";
 import QuadernoSelect from "./quaderno-select";
-import { salvaQuaderno } from "~/stores/quaderni";
 
 // ContentEdit usa tributejs che ha if (window) (invece di `typeof window`) che non funziona su server
 const ContentEdit = unstable_clientOnly(() => import("~/components/ContentEdit"));
@@ -23,7 +20,7 @@ export default function Nota(params: {nota: TPlainNota, onUpdate: (val: TPlainNo
         <div style="display: flex; flex-direction: column; height: 100%">
             <div>
                 <h1><input value={params.nota?.titolo} onchange={ev => updateTitle(ev.currentTarget.value)} /></h1>
-                <QuadernoSelect quadernoId={params.nota?.quaderno} onNuovoQuaderno={salvaQuaderno} onChange={updateQuaderno} />
+                <QuadernoSelect quadernoId={params.nota?.quaderno} onChange={updateQuaderno} />
             </div>
             <div style="flex: 1">
                 <ContentEdit nota={params.nota} onUpdate={val => onUpdate(val)}></ContentEdit>
