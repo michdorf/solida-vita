@@ -31,7 +31,7 @@ export default function ContentEdit(params: {nota: TPlainNota, onUpdate: (val: s
         if (!divEl || isServer) {return}
         let tribute = new Tribute({
             trigger: '@',
-            values: [...persone.map(persona => {return {key: persona.nome, value: persona.key}}), {key: "+ Nuova persona", value: newTriggerString}]
+            values: [...persone.map(persona => {return {key: persona.nome, value: persona.keyid}}), {key: "+ Nuova persona", value: newTriggerString}]
         });
         tribute.attach(divEl);
         divEl.addEventListener("tribute-replaced", function(e) {

@@ -9,14 +9,14 @@ export default function PersonaForm(props: {onSubmit: (persona: IPersona) => voi
     createEffect(() => {
         let key = persona.nome.toLowerCase().replace(/[^a-z]/g, "");
         let i = 0;
-        while (persone.find(pr => pr.key === key)) {
+        while (persone.find(pr => pr.keyid === key)) {
             key = persona.nome.toLowerCase().replace(/[^a-z]/g, "") + "-" + i;
             i++;
         }
-        setPersona('key', key);
+        setPersona('keyid', key);
     });
 
-    let keytaken = () => typeof persone.find(pr => pr.key === persona.key) !== "undefined";
+    let keytaken = () => typeof persone.find(pr => pr.keyid === persona.keyid) !== "undefined";
 
     return (
         <form onsubmit={e => {
@@ -24,7 +24,7 @@ export default function PersonaForm(props: {onSubmit: (persona: IPersona) => voi
             props.onSubmit({ ...persona });
             setPersona(nuovaPersona());
         }}>
-            <input placeholder="Key" value={persona.key} onChange={(e) => setPersona({key: e.currentTarget.value})} /><br/>
+            <input placeholder="Key" value={persona.keyid} onChange={(e) => setPersona({keyid: e.currentTarget.value})} /><br/>
             <input placeholder="Nome" value={persona.nome} onChange={(e) => setPersona({nome: e.currentTarget.value})} /><br/>
             <select onChange={(e) => setPersona({sesso: e.currentTarget.value})}>
                 <option value="f">Femine</option>
