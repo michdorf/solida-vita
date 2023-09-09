@@ -1,9 +1,10 @@
-import { createEffect } from "solid-js";
+import { createEffect, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
-import IPersona from "~/interface/persona";
+import IPersona, { TSesso } from "~/interface/persona";
 import persone, { nuovaPersona } from "~/stores/persone";
 
 export default function PersonaForm(props: {onSubmit: (persona: IPersona) => void}) {
+    let nomeInput: HTMLInputElement | undefined;
     const [persona, setPersona] = createStore<IPersona>(nuovaPersona());
 
     createEffect(() => {
@@ -16,6 +17,13 @@ export default function PersonaForm(props: {onSubmit: (persona: IPersona) => voi
         setPersona('keyid', key);
     });
 
+    onMount(() => {
+        if (nomeInput) {
+            nomeInput.focus();
+            nomeInput.select();
+        }
+    });
+
     let keytaken = () => typeof persone.find(pr => pr.keyid === persona.keyid) !== "undefined";
 
     return (
@@ -25,8 +33,8 @@ export default function PersonaForm(props: {onSubmit: (persona: IPersona) => voi
             setPersona(nuovaPersona());
         }}>
             <input placeholder="Key" value={persona.keyid} onChange={(e) => setPersona({keyid: e.currentTarget.value})} /><br/>
-            <input placeholder="Nome" value={persona.nome} onChange={(e) => setPersona({nome: e.currentTarget.value})} /><br/>
-            <select onChange={(e) => setPersona({sesso: e.currentTarget.value})}>
+            <input ref={nomeInput} placeholder="Nome" value={persona.nome} onChange={(e) => setPersona({nome: e.currentTarget.value})} /><br/>
+            <select onChange={(e) => setPersona("sesso", () => e.currentTarget.value as TSesso)}>
                 <option value="f">Femine</option>
                 <option value="m">Machio</option>
                 <option value="o">Altro</option>
