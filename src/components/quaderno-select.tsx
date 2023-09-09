@@ -4,7 +4,6 @@ import QuadernoForm from "./leftpanel/quadernoform";
 import Modal from "./modal";
 
 export default function QuadernoSelect(props: {quadernoId?: string, onChange: (uuid: string) => void}) {
-
     const [aggModo, setAggModo] = createSignal(false);
 
     function onChange(e: Event) {
@@ -22,8 +21,8 @@ export default function QuadernoSelect(props: {quadernoId?: string, onChange: (u
     return (
         <>
         {/* props.quadernoId */}
-        <Modal show={aggModo()}>
-            <QuadernoForm onSubmit={(q) => {salvaQuaderno(q); setAggModo(false);}}></QuadernoForm>
+        <Modal show={aggModo()} onHide={() => setAggModo(false)}>
+            <QuadernoForm onSubmit={(q) => {salvaQuaderno(q); setAggModo(false)}}></QuadernoForm>
         </Modal>
         <select onChange={onChange}>
             <option selected={!props.quadernoId} value="">Tutti quaderni</option>

@@ -1,0 +1,22 @@
+.modal {
+  /* display: none; */
+  background-color: white;
+  margin: auto;
+  min-height: 258px;
+  min-width: 640px;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  margin-left: -320px;
+  border: 1px dashed;
+  box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .modal {
+    width: 100%;
+    min-width: initial;
+    left: 0;
+    margin-left: 0;
+  }
+}

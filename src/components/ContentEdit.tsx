@@ -5,9 +5,9 @@ import Tribute, { TributeItem } from "tributejs";
 import { createSignal, onMount} from "solid-js";
 import { isServer } from "solid-js/web";
 import getDifference from "~/lib/diff";
-import Modal from "./modal";
 import PersonaForm from "./persona-form";
 import persone, { salvaPersona } from "~/stores/persone";
+import Modal from "./modal";
 
 export default function ContentEdit(params: {nota: TPlainNota, onUpdate: (val: string) => void}) {
     let divEl: HTMLDivElement | undefined;
@@ -35,8 +35,9 @@ export default function ContentEdit(params: {nota: TPlainNota, onUpdate: (val: s
         });
         tribute.attach(divEl);
         divEl.addEventListener("tribute-replaced", function(e) {
-            console.log("Matched item:", e.detail.item);
-            const item = e.detail.item;
+            const typedEv = e as Event & {detail: {item: {'string': string; "score": number;"index":number;"original":{"key":string,"value":string}}}};
+            console.log("Matched item:", typedEv.detail.item);
+            const item = typedEv.detail.item;
             if (item.original.value === newTriggerString && divEl) {
                 setAggPersona(true);
                 divEl.innerHTML = cacheTxt;
@@ -57,8 +58,8 @@ export default function ContentEdit(params: {nota: TPlainNota, onUpdate: (val: s
 
     return (
             <>
-            <Modal show={aggPersona()}>
-                <PersonaForm onSubmit={persona => {salvaPersona(persona); setAggPersona(false);}}></PersonaForm>
+            <Modal show={aggPersona()} onHide={() => setAggPersona(false)}>
+                <PersonaForm onSubmit = {persona => {salvaPersona(persona); setAggPersona(false)}} />
             </Modal>
             <div ref={divEl} style={{height: "100%", width: "100%", 'overflow-y': 'auto'}}
                  contenteditable={true}

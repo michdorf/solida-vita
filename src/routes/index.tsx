@@ -1,9 +1,9 @@
 import "./index.css";
-import { createSignal, For, Show} from "solid-js";
+import { createEffect, createSignal, Show} from "solid-js";
 import initMemo from "~/lib/db";
 import oauthclient, { autoLogin, oauthStatus } from "~/lib/oauth";
 import Memo from "~/moduli/memo/memo";
-import note, {salvaInDb as memoSalvaInDb, notaEditato, notaSelto, nuovaNota as nuovaNotaStore, salvaNota, setNotaEditato, setNotaSelto} from "~/stores/note";
+import {salvaInDb as memoSalvaInDb, notaEditato, notaSelto, salvaNota, setNotaEditato, setNotaSelto} from "~/stores/note";
 import NotaLista from '~/components/leftpanel/note'
 import QuaderniLista from '~/components/leftpanel/quaderni'
 import Nota from "~/components/Nota";
@@ -44,7 +44,7 @@ export default function Home() {
     if (cambiato && !confirm("Salva prima di chiudere?")) {
       salvaInDb();
       return;
-    }else {
+    } else {
       cambiato = false;
     }
 
@@ -62,7 +62,6 @@ export default function Home() {
 
   return (
     <main style="display: flex; flex-direction: column">
-      <div id="modal"></div>
       <div class="header">
         <div style={{'position':'absolute', left: 0, top: '1rem'}}>
           <button onClick={toggleQuaderni}>Quaderni</button>

@@ -1,33 +1,13 @@
-import { ParentProps, Show, createEffect, createSignal, onMount } from "solid-js";
-import { Portal } from "solid-js/web";
+import { JSX, ParentComponent, ParentProps, Setter, Show, createEffect, createSignal, onMount } from "solid-js";
+import styles from './modal.module.css';
 
-export default function Modal(props: ParentProps & {show: boolean}) {
-    const [modal, setModal] = createSignal<HTMLElement | null>(null);
-    createEffect(() => {
-        if (props.show && modal()) {
-            modal()!.style.display = props.show ? "block" : "none";
-        }
-    });
-
-    function hide() {
-        const el = modal();
-        if (el) {
-            el.style.display = "none";
-        }
-    }
-
-    onMount(() => {
-        setModal(document.getElementById("modal"));
-    });
-
+export default function Modal(props: ParentProps & {show: boolean, onHide: () => void}) {
     return (
-        <>
-        <Show when={modal() && props.show}>
-        <Portal mount={modal()!}>
-            <button onClick={hide}>Luk</button>
+        <Show when={props.show}>
+        <div class={styles.modal}>
+            <button onClick={props.onHide}>Luk</button>
             {props.children}
-        </Portal>
+        </div>
         </Show>
-        </>
     );
 }
