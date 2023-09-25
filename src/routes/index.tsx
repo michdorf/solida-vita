@@ -1,5 +1,5 @@
 import "./index.css";
-import { createEffect, createSignal, Show} from "solid-js";
+import { createSignal, Show} from "solid-js";
 import initMemo from "~/lib/db";
 import oauthclient, { autoLogin, oauthStatus } from "~/lib/oauth";
 import Memo from "~/moduli/memo/memo";
@@ -11,13 +11,14 @@ import NotaT from "~/interface/nota";
 import {isServer} from "solid-js/web";
 import {decrypt} from "~/stores/codice";
 import DropdownBtn from "~/components/dropmenu";
+import { useNavigate } from "solid-start";
 
 export type TPlainNota = NotaT & {plain?: string, nuova?: boolean}
 let memo: Memo;
 export default function Home() {
   // let notaSelto = () => note().filter(n => n.UUID === notaIdSelto())[0] || undefined;
 
-  const plainSelto = () => notaSelto() ? Object.assign({plain: decrypt(notaSelto()?.contenuto || "", notaSelto()?.enc_versione)}, notaSelto()) : undefined;
+  const plainSelto = () => notaSelto() ? Object.assign({plain: decrypt(notaSelto()?.contenuto || "", notaSelto()?.enc_versione) + ''}, notaSelto()) : undefined;
 
   if (!isServer) {
     memo = initMemo();
@@ -31,12 +32,15 @@ export default function Home() {
     salvaNota(nota);
   }
 
+  const navigate = useNavigate();
   function salvaInDb() {
     let notaSelez = notaEditato();
     if (!notaSelez) {
       return;
     }
-    memoSalvaInDb(notaSelez);
+    memoSalvaInDb(notaSelez, (reason) => {
+      navigate('/unlock');
+    });
     cambiato = false;
   }
 

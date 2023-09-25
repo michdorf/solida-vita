@@ -3,7 +3,7 @@ import { UPDATE_TIPO } from "~/moduli/memo/memo";
 import Memo from "~/moduli/memo/memo";
 import type INota from "~/interface/nota";
 import {TPlainNota} from "~/routes";
-import {encrypt} from "~/stores/codice";
+import {ENCRYPT_ERRORS, encrypt} from "~/stores/codice";
 export {INota};
 
 const [note, setNote] = createSignal<INota[]>([]);
@@ -84,13 +84,18 @@ export function nuovaNota(quaderno: string) {
     return salvaNota(nota);
 }
 
-export function salvaInDb(nota: TPlainNota) {
+export function salvaInDb(nota: TPlainNota, onFailed: (reason: ENCRYPT_ERRORS.NEEDSCODE) => void) {
     const enc_versione = 2;
     const clone = Object.assign({}, nota);
     if (!clone.plain) {
         console.warn("Nota plain non definita. Forse non hai decriptato.");
     } else if (clone.plain) {
-        clone.contenuto = encrypt(clone.plain, enc_versione);
+        let encres = encrypt(clone.plain, enc_versione);
+        if (encres === ENCRYPT_ERRORS.NEEDSCODE) {
+            onFailed(ENCRYPT_ERRORS.NEEDSCODE);
+            return;
+        }
+        clone.contenuto = encres;
         clone.enc_versione = enc_versione;
     }
     if (!(delete clone.plain)) {

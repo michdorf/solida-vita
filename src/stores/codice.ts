@@ -5,7 +5,12 @@ declare let cifra: any;
 const [codice, setCodice] = createSignal("");
 const [cifErrore, setCifErrore] = createSignal(false);
 
-export function decrypt(input: string, enc_versione?: number) {
+export enum ENCRYPT_ERRORS {
+    NEEDSCODE,
+    FAILEDDECRYPT
+};
+
+export function decrypt(input: string, enc_versione?: number): string | ENCRYPT_ERRORS.NEEDSCODE {
     const navigate = useNavigate();
 
     if (!enc_versione) {
@@ -13,7 +18,7 @@ export function decrypt(input: string, enc_versione?: number) {
     }
     if (!codice()) {
         navigate("/unlock");
-        return "";
+        return ENCRYPT_ERRORS.NEEDSCODE;
     } else {
         const dez = cifra.dec(input, codice(), enc_versione);
         if (typeof dez === "object" && 'check' in dez) {
@@ -26,15 +31,13 @@ export function decrypt(input: string, enc_versione?: number) {
     }
 }
 
-export function encrypt(input: string, enc_versione: number = 2) {
-    const navigate = useNavigate();
-
+export function encrypt(input: string, enc_versione: number = 2): ENCRYPT_ERRORS.NEEDSCODE | string {
     if (!enc_versione) {
         return input;
     }
     if (!codice()) {
-        navigate("/unlock");
-        return "";
+        setCifErrore(true);
+        return ENCRYPT_ERRORS.NEEDSCODE;
     } else {
         return cifra.enc(input, codice(), enc_versione);
     }

@@ -25,7 +25,7 @@ export default function Nota(params: {nota: TPlainNota, onUpdate: (val: TPlainNo
             <div style="flex: 1">
                 <ContentEdit nota={params.nota} onUpdate={val => onUpdate(val)}></ContentEdit>
             </div>
-            <div style={{'text-align': 'right'}}>
+            <div style={{'text-align': 'right', 'margin-bottom': '1em'}}>
                 <button onclick={params.onSalva}>Salva</button>
             </div>
         </div>
