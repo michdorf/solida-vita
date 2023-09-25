@@ -51,9 +51,22 @@ p {
   line-height: 1.35;
 }
 
-@media (min-width: 640px) {
+@media screen and (max-width: 640px) {
   h1 {
     max-width: none;
+  }
+
+  .panel-cont .left.panel, .panel-cont .right.panel {
+    width: 100%;
+  }
+  .panel-cont .left.panel {
+    display: none;
+  }
+  .panel-cont.leftpanelopen .left.panel {
+    display: initial;
+  }
+  .panel-cont.leftpanelopen .right.panel {
+    display: none;
   }
 
   p {

@@ -20,6 +20,8 @@ export default function Home() {
 
   const plainSelto = () => notaSelto() ? Object.assign({plain: decrypt(notaSelto()?.contenuto || "", notaSelto()?.enc_versione) + ''}, notaSelto()) : undefined;
 
+  const [mostraSidePanel, setMostraSidePanel] = createSignal(true);
+
   if (!isServer) {
     memo = initMemo();
     autoLogin().catch(e => console.error(e));
@@ -52,6 +54,7 @@ export default function Home() {
       cambiato = false;
     }
 
+    setMostraSidePanel(false);
     setNotaSelto(nota);
   }
 
@@ -68,6 +71,7 @@ export default function Home() {
     <main style="display: flex; flex-direction: column">
       <div class="header">
         <div style={{'position':'absolute', left: 0, top: '1rem'}}>
+          <button onClick={() => setMostraSidePanel(mostra => !mostra)}>Sidepanel</button>
           <button onClick={toggleQuaderni}>Quaderni</button>
         </div>
         <h1>Notes</h1>
@@ -77,7 +81,7 @@ export default function Home() {
           </DropdownBtn>
         </div>
       </div>
-      <div class="panel-cont">
+      <div class="panel-cont" classList={{leftpanelopen: mostraSidePanel()}}>
         <div class="left panel">
           <Show when={mostraQuaderni()} fallback={<NotaLista onSelected={seleziona}></NotaLista>}>
             <QuaderniLista></QuaderniLista>
